@@ -1,0 +1,45 @@
+package spi
+
+import (
+	"encoding/xml"
+)
+
+type Envelope struct {
+	XMLName xml.Name `xml:"http://www.w3.org/2003/05/soap-envelope Envelope"`
+	Body    Body
+}
+
+type Body struct {
+	XMLName xml.Name `xml:"http://www.w3.org/2003/05/soap-envelope Body"`
+}
+
+type RequestChallengeEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		RequestChallenge struct {
+			XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd requestChallenge"`
+			UID     string   `xml:"uid"`
+		}
+	}
+}
+
+type RequestChallengeResponse struct {
+	ChallengeID int64  `xml:"http://api.testbed.deterlab.net/xsd challengeID"`
+	Validity    string `xml:"http://api.testbed.deterlab.net/xsd validity"`
+	Type        string `xml:"http://api.testbed.deterlab.net/xsd type"`
+}
+
+type RequestChallengeResponseEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		RequestChallengeResponse struct {
+			XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd requestChallengeResponse"`
+			Return  struct {
+				XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd return"`
+				RequestChallengeResponse
+			}
+		}
+	}
+}

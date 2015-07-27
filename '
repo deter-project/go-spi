@@ -1,0 +1,21 @@
+package spi
+
+import (
+	"testing"
+)
+
+/*
+func TestRequestChallenge(t *testing.T) {
+	requestChallenge()
+}
+*/
+
+func TestMarshallEnvelope(t *testing.T) {
+	e := Envelope{}
+	data, err := xml.MarshalIndent(&e, "","  ")
+	if err != nil {
+		//die slowly and painfully
+	}
+	buf := bytes.NewBuffer(data)
+	fmt.Println(buf.String())
+}
