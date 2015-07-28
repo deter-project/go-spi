@@ -1,23 +1,27 @@
 package spi
 
 import (
-	"fmt"
+	"log"
 	"testing"
 )
 
 func TestRequestChallenge(t *testing.T) {
 
-	response, err := requestChallenge("deterboss")
-
+	//send challenge and check result
+	response, err := RequestChallenge("deterboss")
 	if err != nil {
 		t.Error(err)
 		return
 	}
+	log.Printf("challengeID: %d\n", response.ChallengeID)
 
-	if response.ChallengeID == 0 {
-		t.Error("Uninitialized challengeID")
+	//respond to challenge
+	cresponse, err := ChallengeResponse(response.ChallengeID, "muffins")
+	if err != nil {
+		t.Error(err)
+		return
 	}
-
-	fmt.Printf("challengeID: %d\n", response.ChallengeID)
+	log.Printf("challengeResponse accepted\n")
+	log.Printf("\n%s\n", cresponse.Return)
 
 }

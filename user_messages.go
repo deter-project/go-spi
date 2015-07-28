@@ -43,3 +43,27 @@ type RequestChallengeResponseEnvelope struct {
 		}
 	}
 }
+
+type ChallengeResponseEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		ChallengeResponse struct {
+			XMLName      xml.Name `xml:"http://api.testbed.deterlab.net/xsd challengeResponse"`
+			ResponseData string   `xml:"http://api.testbed.deterlab.net/xsd responseData"`
+			ChallengeID  int64    `xml:"http://api.testbed.deterlab.net/xsd challengeID"`
+		}
+	}
+}
+
+type ChallengeResponseResponse struct {
+	Return string `xml:"http://api.testbed.deterlab.net/xsd return"`
+}
+
+type ChallengeResponseResponseEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		ChallengeResponseResponse ChallengeResponseResponse `xml:"http://api.testbed.deterlab.net/xsd challengeResponseResponse"`
+	}
+}
