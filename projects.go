@@ -3,7 +3,6 @@ package spi
 import (
 	"errors"
 	"log"
-	"net/http"
 )
 
 //Common Variables -------------------------------------------------------------
