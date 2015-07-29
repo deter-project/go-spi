@@ -14,12 +14,6 @@ const PROJECTS_HTTPS = API_HTTPS + "/Projects"
 
 func ViewProjects(uid string, regex string) (*ViewProjectsResponse, error) {
 
-	log.Printf("cert count: %d",
-		len(client.Transport.(*http.Transport).TLSClientConfig.Certificates))
-
-	//log.Printf("cert count: %d",
-	//		client.Transport.(*http.Transport).TLSClientConfig.NameToCertificate)
-
 	//create the envelope
 	e := ViewProjectsEnvelope{}
 	e.Body.ViewProjects.UID = uid
