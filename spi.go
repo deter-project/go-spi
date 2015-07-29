@@ -155,10 +155,12 @@ func setCertificate(comboCert []byte) error {
 		return err
 	}
 
-	//tr.TLSClientConfig.ClientAuth = tls.RequestClientCert
 	tr.TLSClientConfig.Certificates = []tls.Certificate{x509}
 	tr.TLSClientConfig.Rand = rand.Reader
 	tr.TLSClientConfig.BuildNameToCertificate()
+	tr.TLSClientConfig.NameToCertificate = nil
+
+	tr.CloseIdleConnections()
 
 	return nil
 }
