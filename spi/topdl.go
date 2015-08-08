@@ -42,5 +42,5 @@ type Latency struct {
 }
 
 type Kind struct {
-	Value String //should be either "max" or "average"
+	Value string //should be either "max" or "average"
 }
