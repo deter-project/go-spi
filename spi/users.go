@@ -3,6 +3,7 @@ package spi
 import (
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"log"
 )
 
@@ -86,5 +87,35 @@ func ChallengeResponse(challengeID int64, password string) (
 	crr.Return = string(cert)
 
 	return crr, nil
+
+}
+
+func Login(user, password string) error {
+
+	//send challenge and check result
+	response, err := RequestChallenge(user)
+	if err != nil {
+		log.Println(err)
+		return fmt.Errorf("[Login] Error sending request challenge")
+	}
+	log.Printf("[Login] challengeID: %d\n", response.ChallengeID)
+
+	//respond to challenge
+	cresponse, err := ChallengeResponse(response.ChallengeID, password)
+	if err != nil {
+		log.Println(err)
+		return fmt.Errorf("[Login] Error sending challenge response")
+	}
+	log.Printf("[Login] challengeResponse accepted\n")
+	//log.Printf("\n%s\n", cresponse.Return)
+
+	//use the certificate we got back from ChallengeResponse for future comms
+	err = setCertificate([]byte(cresponse.Return))
+	if err != nil {
+		log.Println(err)
+		return fmt.Errorf("[Login] Error setting certificate")
+	}
+
+	return nil
 
 }

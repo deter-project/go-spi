@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestRequestChallenge(t *testing.T) {
+func __t__TestRequestChallenge(t *testing.T) {
 
 	//send challenge and check result
 	response, err := RequestChallenge("deterboss")

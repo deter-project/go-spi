@@ -18,7 +18,7 @@ import (
 
 const (
 	//note: you must set your /etc/hosts for this entry
-	API_HOST = "api.deterlab.net"
+	API_HOST = "spi.deterlab.net"
 
 	API_PORT = "52323"
 
