@@ -7,7 +7,7 @@ import (
 type Experiment struct {
 	XMLName    xml.Name    `xml:"experiment"`
 	Substrates []Substrate `xml:"substrates"`
-	Elements   []Element   `xml:"elements"`
+	Elements   Elements    `xml:"elements"`
 }
 
 type Substrate struct {
@@ -18,13 +18,20 @@ type Substrate struct {
 
 type Element interface{}
 
+type Elements struct {
+	XMLName  xml.Name  `xml:"elements"`
+	Elements []Element `xml:"element"`
+}
+
 type Computer struct {
+	XMLName    xml.Name    `xml:"computer"`
 	Name       string      `xml:"name"`
-	Interfaces []Interface `xml:"interfaces"`
+	Interfaces []Interface //`xml:"interfaces"`
 	OSs        []OS        `xml:"oss"`
 }
 
 type Interface struct {
+	XMLName   xml.Name `xml:"interface"`
 	Name      string   `xml:"name"`
 	Substrate string   `xml:"substrate"`
 	Capacity  Capacity `xml:"capacity"`

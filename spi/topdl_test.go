@@ -20,8 +20,8 @@ func TestTwoLink(t *testing.T) {
 	})
 
 	var b Computer
-	a.Name = "b"
-	a.Interfaces = append(a.Interfaces, Interface{
+	b.Name = "b"
+	b.Interfaces = append(b.Interfaces, Interface{
 		Name:      "ifx0",
 		Substrate: "ab-link",
 		Capacity:  Capacity{1000, Kind{"max"}},
@@ -33,8 +33,8 @@ func TestTwoLink(t *testing.T) {
 	ab.Capacity = Capacity{1000, Kind{"max"}}
 	ab.Latency = Latency{10, Kind{"max"}}
 
-	topo.Elements = append(topo.Elements, a)
-	topo.Elements = append(topo.Elements, b)
+	topo.Elements.Elements = append(topo.Elements.Elements, a)
+	topo.Elements.Elements = append(topo.Elements.Elements, b)
 	topo.Substrates = append(topo.Substrates, ab)
 
 	topdl, err := xml.MarshalIndent(topo, "  ", "  ")
