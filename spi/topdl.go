@@ -27,7 +27,7 @@ type Computer struct {
 	XMLName    xml.Name    `xml:"computer"`
 	Name       string      `xml:"name"`
 	Interfaces []Interface //`xml:"interfaces"`
-	OSs        []OS        `xml:"oss"`
+	OSs        []OS        `xml:"os"`
 }
 
 type Interface struct {
