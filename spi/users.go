@@ -75,6 +75,7 @@ func ChallengeResponse(challengeID int64, password string) (
 	}
 	crr := &crre.Body.ChallengeResponseResponse
 	if crr.Return == "" {
+		log.Println("warning: empty certificate, already logged in?")
 		return nil, errors.New("empty certificate")
 	}
 
