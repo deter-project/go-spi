@@ -144,7 +144,7 @@ func init() {
 setCertificate sets the certificate that is used when communicating with the
 SPI server
 */
-func setCertificate(comboCert []byte) error {
+func SetCertificate(comboCert []byte) error {
 
 	certBits := certRx.Find(comboCert)
 	keyBits := keyRx.Find(comboCert)

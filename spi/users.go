@@ -115,7 +115,7 @@ func Login(user, password string) ([]byte, error) {
 	//log.Printf("\n%s\n", cresponse.Return)
 
 	//use the certificate we got back from ChallengeResponse for future comms
-	err = setCertificate([]byte(cresponse.Return))
+	err = SetCertificate([]byte(cresponse.Return))
 	if err != nil {
 		log.Println(err)
 		return []byte(cresponse.Return), fmt.Errorf("[Login] Error setting certificate")
