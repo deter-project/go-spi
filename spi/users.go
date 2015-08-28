@@ -91,13 +91,13 @@ func ChallengeResponse(challengeID int64, password string) (
 
 }
 
-func Login(user, password string) error {
+func Login(user, password string) ([]byte, error) {
 
 	//send challenge and check result
 	response, err := RequestChallenge(user)
 	if err != nil {
 		log.Println(err)
-		return fmt.Errorf("[Login] Error sending request challenge")
+		return nil, fmt.Errorf("[Login] Error sending request challenge")
 	}
 	log.Printf("[Login] challengeID: %d\n", response.ChallengeID)
 
@@ -105,12 +105,12 @@ func Login(user, password string) error {
 	cresponse, err := ChallengeResponse(response.ChallengeID, password)
 	if err != nil {
 		log.Println(err)
-		return fmt.Errorf("[Login] Error sending challenge response")
+		return nil, fmt.Errorf("[Login] Error sending challenge response")
 	}
 	log.Printf("[Login] challengeResponse accepted\n")
 	//if the challenge response is nil then we are already logged in
 	if cresponse == nil {
-		return nil
+		return nil, nil
 	}
 	//log.Printf("\n%s\n", cresponse.Return)
 
@@ -118,9 +118,9 @@ func Login(user, password string) error {
 	err = setCertificate([]byte(cresponse.Return))
 	if err != nil {
 		log.Println(err)
-		return fmt.Errorf("[Login] Error setting certificate")
+		return []byte(cresponse.Return), fmt.Errorf("[Login] Error setting certificate")
 	}
 
-	return nil
+	return []byte(cresponse.Return), nil
 
 }

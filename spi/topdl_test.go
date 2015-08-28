@@ -88,7 +88,7 @@ func TestThreeLink(t *testing.T) {
 	return
 
 	//create a session with the DeterLab SPI
-	err = Login("deterboss", "muffins")
+	_, err = Login("deterboss", "muffins")
 	if err != nil {
 		t.Log(err)
 		t.Error("unable to login as deterboss")
