@@ -54,7 +54,7 @@ func ChallengeResponse(challengeID int64, password string) (
 
 	//create the envelope
 	passB64 := base64.StdEncoding.EncodeToString([]byte(password))
-	log.Printf("encoded password: %s", passB64)
+	//log.Printf("encoded password: %s", passB64)
 	e := ChallengeResponseEnvelope{}
 	e.Body.ChallengeResponse.ResponseData = passB64
 	e.Body.ChallengeResponse.ChallengeID = challengeID
