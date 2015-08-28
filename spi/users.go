@@ -108,6 +108,10 @@ func Login(user, password string) error {
 		return fmt.Errorf("[Login] Error sending challenge response")
 	}
 	log.Printf("[Login] challengeResponse accepted\n")
+	//if the challenge response is nil then we are already logged in
+	if cresponse == nil {
+		return nil
+	}
 	//log.Printf("\n%s\n", cresponse.Return)
 
 	//use the certificate we got back from ChallengeResponse for future comms
