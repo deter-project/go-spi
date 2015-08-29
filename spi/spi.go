@@ -25,6 +25,8 @@ const (
 	API_HTTPS = "https://" + API_HOST + ":" + API_PORT + "/axis2/services"
 )
 
+var debug = false
+
 //This has to be here to allow for self-signed certifacates to work
 var certPool = x509.NewCertPool()
 var tr = &http.Transport{
@@ -60,6 +62,10 @@ func spiCall(addr string, message interface{}, result interface{}) (
 	if err != nil {
 		log.Println(err)
 		return nil, "", err
+	}
+
+	if debug {
+		log.Println(msg)
 	}
 
 	//make the request
