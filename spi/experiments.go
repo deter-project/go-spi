@@ -23,7 +23,7 @@ func CreateExperiment(expId, owner, topdl string) (
 		Type: "layout",
 	})
 	e.Body.CreateExperiment.Profile = append(e.Body.CreateExperiment.Profile, DescriptionAttr{
-		"Description", "This is not an experiment"})
+		"description", "This is not an experiment"})
 
 	var responseEnvelope CreateExperimentResponseEnvelope
 
