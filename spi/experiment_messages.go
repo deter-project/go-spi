@@ -9,6 +9,19 @@ type ExperimentAspect struct {
 	Type string `xml:"type"`
 }
 
+type Attribute interface {
+	GetName() string
+}
+
+type DescriptionAttr struct {
+	Name  string `xml:"name"`
+	Value string `xml:",innerxml"`
+}
+
+func (d DescriptionAttr) GetName() string {
+	return d.Name
+}
+
 type CreateExperimentEnvelope struct {
 	Envelope
 	Body struct {
@@ -18,6 +31,7 @@ type CreateExperimentEnvelope struct {
 			EID     string             `xml:"eid"`
 			Owner   string             `xml:"owner"`
 			Aspects []ExperimentAspect `xml:"aspects"`
+			Profile []Attribute        `xml:"profile"`
 		}
 	}
 }

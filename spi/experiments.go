@@ -22,6 +22,8 @@ func CreateExperiment(expId, owner, topdl string) (
 		Data: base64.StdEncoding.EncodeToString([]byte(topdl)),
 		Type: "layout",
 	})
+	e.Body.CreateExperiment.Profile = append(e.Body.CreateExperiment.Profile, DescriptionAttr{
+		"Description", "This is not an experiment"})
 
 	var responseEnvelope CreateExperimentResponseEnvelope
 
