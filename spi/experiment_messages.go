@@ -15,7 +15,7 @@ type Attribute interface {
 
 type DescriptionAttr struct {
 	Name  string `xml:"name"`
-	Value string `xml:",innerxml"`
+	Value string `xml:"value"`
 }
 
 func (d DescriptionAttr) GetName() string {
