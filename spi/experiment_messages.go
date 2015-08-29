@@ -14,7 +14,7 @@ type Attribute interface {
 }
 
 type DescriptionAttr struct {
-	Name  string `xml:"name,attr"`
+	Name  string `xml:"name"`
 	Value string `xml:",innerxml"`
 }
 
