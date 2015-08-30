@@ -92,7 +92,8 @@ type RealizationMap struct {
 }
 
 type RealizationDescription struct {
-	XMLName     xml.Name                 `xml:"http://api.testbed.deterlab.net/xsd RealizationDescription"`
+	//XMLName     xml.Name                 `xml:"http://api.testbed.deterlab.net/xsd RealizationDescription"`
+	XMLName     xml.Name                 `xml:"http://api.testbed.deterlab.net/xsd return"`
 	Circle      string                   `xml:"circle"`
 	Experiment  string                   `xml:"experiment"`
 	Name        string                   `xml:"name"`
