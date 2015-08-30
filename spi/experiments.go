@@ -12,6 +12,8 @@ const XPS_HTTPS = API_HTTPS + "/Experiments"
 
 //API calls --------------------------------------------------------------------
 
+// Create Experiment -----------------------------------------------------------
+
 func CreateExperiment(expId, owner, topdl string) (
 	*CreateExperimentResponse, error) {
 
@@ -43,6 +45,8 @@ func CreateExperiment(expId, owner, topdl string) (
 	return response, nil
 }
 
+// Realize Experiment ----------------------------------------------------------
+
 func RealizeExperiment(expId, circle, owner string) (
 	*RealizeExperimentResponse, error) {
 
@@ -69,6 +73,33 @@ func RealizeExperiment(expId, circle, owner string) (
 	return response, nil
 
 }
+
+// Remove Realization ----------------------------------------------------------
+
+func RemoveRealization(expId string) (*RemoveRealizationResponse, error) {
+
+	e := RemoveRealizationEnvelope{}
+	e.Body.RemoveRealization.Name = expId
+
+	var responseEnvelope RemoveRealizationResponseEnvelope
+
+	rsp, _, err := spiCall(XPS_HTTPS+"/removeRealization", e, &responseEnvelope)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	if rsp.StatusCode != 200 {
+		return nil, fmt.Errorf("Server did not accept the removeRealization call - %d",
+			rsp.StatusCode)
+	}
+
+	response := &responseEnvelope.Body.RemoveRealizationResponse
+
+	return response, nil
+}
+
+// Realize Experiment ----------------------------------------------------------
 
 func RemoveExperiment(expId string) (*RemoveExperimentResponse, error) {
 

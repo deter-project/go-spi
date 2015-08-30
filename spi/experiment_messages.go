@@ -87,6 +87,31 @@ type RealizationDescription struct {
 	Staus      string   `xml:"status"`
 }
 
+// Remove Realization
+
+type RemoveRealizationEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		RemoveRealization struct {
+			XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd removeRealization"`
+			Name    string   `xml:"name"`
+		}
+	}
+}
+
+type RemoveRealizationResponse struct {
+	Return bool `xml:"return"`
+}
+
+type RemoveRealizationResponseEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		RemoveRealizationResponse RemoveRealizationResponse `xml:"removeRealizationResponse"`
+	}
+}
+
 // Remove Experiment -----------------------------------------------------------
 
 type RemoveExperimentEnvelope struct {
