@@ -80,13 +80,13 @@ type RealizeExperimentResponseEnvelope struct {
 }
 
 type RealizationContainment struct {
-	XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd RealizationContainment"`
+	XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd containment"`
 	Inner   string   `xml:"inner"`
 	Outer   string   `xml:"outer"`
 }
 
 type RealizationMap struct {
-	XMLName      xml.Name `xml:"http://api.testbed.deterlab.net/xsd RealizationMap"`
+	XMLName      xml.Name `xml:"http://api.testbed.deterlab.net/xsd" mapping`
 	Resource     string   `xml:"resource"`
 	TopologyName string   `xml:"topologyName"`
 }
