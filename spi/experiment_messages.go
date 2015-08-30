@@ -86,7 +86,7 @@ type RealizationContainment struct {
 }
 
 type RealizationMap struct {
-	XMLName      xml.Name `xml:"http://api.testbed.deterlab.net/xsd" mapping`
+	XMLName      xml.Name `xml:"http://api.testbed.deterlab.net/xsd mapping"`
 	Resource     string   `xml:"resource"`
 	TopologyName string   `xml:"topologyName"`
 }
