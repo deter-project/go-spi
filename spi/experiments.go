@@ -43,6 +43,33 @@ func CreateExperiment(expId, owner, topdl string) (
 	return response, nil
 }
 
+func RealizeExperiment(expId, owner, topdl string) (
+	*RealizeExperimentResponse, error) {
+
+	e := RealizeExperimentEnvelope{}
+	e.Body.RealizeExperiment.EID = expId
+	e.Body.RealizeExperiment.UID = owner
+	e.Body.RealizeExperiment.CID = owner
+
+	var responseEnvelope RealizeExperimentResponseEnvelope
+
+	rsp, _, err := spiCall(XPS_HTTPS+"/realizeExperiment", e, &responseEnvelope)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	if rsp.StatusCode != 200 {
+		return nil, fmt.Errorf("Server did not accept the realizeExperiment call - %d",
+			rsp.StatusCode)
+	}
+
+	response := &responseEnvelope.Body.RealizeExperimentResponse
+
+	return response, nil
+
+}
+
 func RemoveExperiment(expId string) (*RemoveExperimentResponse, error) {
 
 	e := RemoveExperimentEnvelope{}

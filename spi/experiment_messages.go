@@ -4,6 +4,8 @@ import (
 	"encoding/xml"
 )
 
+// Attributes & Aspects --------------------------------------------------------
+
 type ExperimentAspect struct {
 	Data string `xml:"data"`
 	Type string `xml:"type"`
@@ -21,6 +23,8 @@ type DescriptionAttr struct {
 func (d DescriptionAttr) GetName() string {
 	return d.Name
 }
+
+// Create Experiment -----------------------------------------------------------
 
 type CreateExperimentEnvelope struct {
 	Envelope
@@ -47,6 +51,43 @@ type CreateExperimentResponseEnvelope struct {
 		CreateExperimentResponse CreateExperimentResponse `xml:"createExperimentResponse"`
 	}
 }
+
+// Realize Experiment ----------------------------------------------------------
+
+type RealizeExperimentEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		RealizeExperiment struct {
+			XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd realizeExperiment"`
+			UID     string   `xml:"uid"`
+			EID     string   `xml:"eid"`
+			CID     string   `xml:"cid"`
+		}
+	}
+}
+
+type RealizeExperimentResponse struct {
+	Return RealizationDescription `xml:"return"`
+}
+
+type RealizeExperimentResponseEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		RealizeExperimentResponse RealizeExperimentResponse `xml:"realizeExperimentResponse"`
+	}
+}
+
+type RealizationDescription struct {
+	XMLName    xml.Name `xml:"http://api.testbed.deterlab.net/xsd RealizationDescription"`
+	Circle     string   `xml:"circle"`
+	Experiment string   `xml:"experiment"`
+	Name       string   `xml:"name"`
+	Staus      string   `xml:"status"`
+}
+
+// Remove Experiment -----------------------------------------------------------
 
 type RemoveExperimentEnvelope struct {
 	Envelope
