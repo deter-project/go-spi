@@ -92,7 +92,11 @@ func spiCall(addr string, message interface{}, result interface{}) (
 		log.Println(bs)
 	}
 
-	xml.Unmarshal([]byte(bs), result)
+	err = xml.Unmarshal([]byte(bs), result)
+	if err != nil {
+		log.Println("unmarshall fail")
+		log.Println(err)
+	}
 
 	return resp, bs, nil
 
