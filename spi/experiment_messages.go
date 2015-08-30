@@ -79,12 +79,27 @@ type RealizeExperimentResponseEnvelope struct {
 	}
 }
 
+type RealizationContainment struct {
+	XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd RealizationContainment"`
+	Inner   string   `xml:"inner"`
+	Outer   string   `xml:"outer"`
+}
+
+type RealizationMap struct {
+	XMLName      xml.Name `xml:"http://api.testbed.deterlab.net/xsd RealizationMap"`
+	Resource     string   `xml:"resource"`
+	TopologyName string   `xml:"topologyName"`
+}
+
 type RealizationDescription struct {
-	XMLName    xml.Name `xml:"http://api.testbed.deterlab.net/xsd RealizationDescription"`
-	Circle     string   `xml:"circle"`
-	Experiment string   `xml:"experiment"`
-	Name       string   `xml:"name"`
-	Staus      string   `xml:"status"`
+	XMLName     xml.Name                 `xml:"http://api.testbed.deterlab.net/xsd RealizationDescription"`
+	Circle      string                   `xml:"circle"`
+	Experiment  string                   `xml:"experiment"`
+	Name        string                   `xml:"name"`
+	Staus       string                   `xml:"status"`
+	Containment []RealizationContainment `xml:"containment"`
+	Mapping     []RealizationMap         `xml:"mapping"`
+	Perms       []string                 `xml:"perms"`
 }
 
 // Remove Realization ---------------------------------------------------------
