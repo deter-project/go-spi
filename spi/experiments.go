@@ -149,3 +149,30 @@ func RemoveExperiment(expId string) (*RemoveExperimentResponse, error) {
 
 	return response, nil
 }
+
+// View Realizations -----------------------------------------------------------
+
+func ViewRealizations(user, regex string) (*ViewRealizationsResponse, error) {
+
+	e := ViewRealizationsEnvelope{}
+	e.Body.ViewRealizations.UID = user
+	e.Body.ViewRealizations.Regex = regex
+
+	var responseEnvelope ViewRealizationsResponseEnvelope
+
+	rsp, _, err := spiCall(REX_HTTPS+"/viewRealizations", e, &responseEnvelope)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	if rsp.StatusCode != 200 {
+		return nil, fmt.Errorf("Server did not accept the viewRealizations call - %d",
+			rsp.StatusCode)
+	}
+
+	response := &responseEnvelope.Body.ViewRealizationsResponse
+
+	return response, nil
+
+}

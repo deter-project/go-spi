@@ -137,6 +137,32 @@ type ReleaseRealizationResponseEnvelope struct {
 	}
 }
 
+// View Realizations -----------------------------------------------------------
+
+type ViewRealizationsEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		ViewRealizations struct {
+			XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd viewRealizations"`
+			UID     string   `xml:"uid"`
+			Regex   string   `xml:"regex"`
+		}
+	}
+}
+
+type ViewRealizationsResponse struct {
+	Return []RealizationDescription `xml:"return"`
+}
+
+type ViewRealizationsResponseEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		ViewRealizationsResponse ViewRealizationsResponse `xml:"viewRealizationsResponse"`
+	}
+}
+
 // Remove Experiment -----------------------------------------------------------
 
 type RemoveExperimentEnvelope struct {
