@@ -88,6 +88,10 @@ func spiCall(addr string, message interface{}, result interface{}) (
 	buf.ReadFrom(resp.Body)
 	bs := buf.String()
 
+	if Debug {
+		log.Println(bs)
+	}
+
 	xml.Unmarshal([]byte(bs), result)
 
 	return resp, bs, nil
