@@ -100,6 +100,31 @@ func RemoveRealization(expId string) (*RemoveRealizationResponse, error) {
 	return response, nil
 }
 
+// Release Realization ----------------------------------------------------------
+
+func ReleaseRealization(expId string) (*ReleaseRealizationResponse, error) {
+
+	e := ReleaseRealizationEnvelope{}
+	e.Body.ReleaseRealization.Name = expId
+
+	var responseEnvelope ReleaseRealizationResponseEnvelope
+
+	rsp, _, err := spiCall(REX_HTTPS+"/releaseRealization", e, &responseEnvelope)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	if rsp.StatusCode != 200 {
+		return nil, fmt.Errorf("Server did not accept the releaseRealization call - %d",
+			rsp.StatusCode)
+	}
+
+	response := &responseEnvelope.Body.ReleaseRealizationResponse
+
+	return response, nil
+}
+
 // Realize Experiment ----------------------------------------------------------
 
 func RemoveExperiment(expId string) (*RemoveExperimentResponse, error) {
