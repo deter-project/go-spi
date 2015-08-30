@@ -9,6 +9,7 @@ import (
 //Common Variables -------------------------------------------------------------
 
 const XPS_HTTPS = API_HTTPS + "/Experiments"
+const REX_HTTPS = API_HTTPS + "/Realizations"
 
 //API calls --------------------------------------------------------------------
 
@@ -83,7 +84,7 @@ func RemoveRealization(expId string) (*RemoveRealizationResponse, error) {
 
 	var responseEnvelope RemoveRealizationResponseEnvelope
 
-	rsp, _, err := spiCall(XPS_HTTPS+"/removeRealization", e, &responseEnvelope)
+	rsp, _, err := spiCall(REX_HTTPS+"/removeRealization", e, &responseEnvelope)
 	if err != nil {
 		log.Println(err)
 		return nil, err
