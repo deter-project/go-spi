@@ -43,13 +43,13 @@ func CreateExperiment(expId, owner, topdl string) (
 	return response, nil
 }
 
-func RealizeExperiment(expId, owner string) (
+func RealizeExperiment(expId, circle, owner string) (
 	*RealizeExperimentResponse, error) {
 
 	e := RealizeExperimentEnvelope{}
 	e.Body.RealizeExperiment.EID = expId
 	e.Body.RealizeExperiment.UID = owner
-	e.Body.RealizeExperiment.CID = owner
+	e.Body.RealizeExperiment.CID = circle
 
 	var responseEnvelope RealizeExperimentResponseEnvelope
 
