@@ -43,7 +43,7 @@ func CreateExperiment(expId, owner, topdl string) (
 	return response, nil
 }
 
-func RealizeExperiment(expId, owner, topdl string) (
+func RealizeExperiment(expId, owner string) (
 	*RealizeExperimentResponse, error) {
 
 	e := RealizeExperimentEnvelope{}
