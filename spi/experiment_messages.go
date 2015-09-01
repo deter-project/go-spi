@@ -237,3 +237,42 @@ type RemoveExperimentResponseEnvelope struct {
 		RemoveExperimentResponse RemoveExperimentResponse
 	}
 }
+
+// Change Experiment Profile ---------------------------------------------------
+
+type ChangeExperimentProfileEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		ChangeExperimentProfile struct {
+			XMLName xml.Name          `xml:"http://api.testbed.deterlab.net/xsd changeExperimentProfile"`
+			EID     string            `xml:"eid"`
+			Changes []ChangeAttribute `xml:"changes"`
+		}
+	}
+}
+
+type ChangeAttribute struct {
+	XMLName xml.Name `xml:"changes"`
+	Delete  bool     `xml:"delete"`
+	Name    string   `xml:"name"`
+	Value   string   `xml:"value"`
+}
+
+type ChangeExperimentProfileResponse struct {
+	Return []ChangeResult `xml:"return"`
+}
+
+type ChangeExperimentProfileResponseEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		ChangeExperimentProfileResponse ChangeExperimentProfileResponse
+	}
+}
+
+type ChangeResult struct {
+	Name    string `xml:"name"`
+	Reason  string `xml:"reason"`
+	Success bool   `xml:"success"`
+}

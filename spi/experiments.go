@@ -204,3 +204,31 @@ func ViewRealizations(user, regex string) (*ViewRealizationsResponse, error) {
 	return response, nil
 
 }
+
+// Change Experiment Profile ---------------------------------------------------
+
+func ChangeExperimentProfile(name string, attributes []ChangeAttribute) (
+	*ChangeExperimentProfileResponse, error) {
+
+	e := ChangeExperimentProfileEnvelope{}
+	e.Body.ChangeExperimentProfile.EID = name
+	e.Body.ChangeExperimentProfile.Changes = attributes
+
+	var responseEnvelope ChangeExperimentProfileResponseEnvelope
+
+	rsp, _, err := spiCall(XPS_HTTPS+"/changeExperimentProfile", e, &responseEnvelope)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	if rsp.StatusCode != 200 {
+		return nil, fmt.Errorf("Server did not accept the changeExperimentProfile call = %d",
+			rsp.StatusCode)
+	}
+
+	response := &responseEnvelope.Body.ChangeExperimentProfileResponse
+
+	return response, nil
+
+}
