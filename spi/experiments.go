@@ -159,6 +159,9 @@ func ViewExperiments(user, regex string) (*ViewExperimentsResponse, error) {
 	e := ViewExperimentsEnvelope{}
 	e.Body.ViewExperiments.UID = user
 	e.Body.ViewExperiments.Regex = regex
+	e.Body.ViewExperiments.ListOnly = true
+	e.Body.ViewExperiments.Offset = 0
+	e.Body.ViewExperiments.Count = 47
 
 	var responseEnvelope ViewExperimentsResponseEnvelope
 
@@ -228,6 +231,34 @@ func ChangeExperimentProfile(name string, attributes []ChangeAttribute) (
 	}
 
 	response := &responseEnvelope.Body.ChangeExperimentProfileResponse
+
+	return response, nil
+
+}
+
+// Chanage Experiment ACL ------------------------------------------------------
+
+func ChangeExperimentACL(name string, acl []AccessMember) (
+	*ChangeExperimentACLResponse, error) {
+
+	e := ChangeExperimentACLEnvelope{}
+	e.Body.ChangeExperimentACL.EID = name
+	e.Body.ChangeExperimentACL.ACL = acl
+
+	var responseEnvelope ChangeExperimentACLResponseEnvelope
+
+	rsp, _, err := spiCall(XPS_HTTPS+"/changeExperimentACL", e, &responseEnvelope)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	if rsp.StatusCode != 200 {
+		return nil, fmt.Errorf("Server did not accept the changeExperimentACL call = %d",
+			rsp.StatusCode)
+	}
+
+	response := &responseEnvelope.Body.ChangeExperimentACLResponse
 
 	return response, nil
 

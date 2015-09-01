@@ -193,9 +193,12 @@ type ViewExperimentsEnvelope struct {
 	Body struct {
 		Body
 		ViewExperiments struct {
-			XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd viewExperiments"`
-			UID     string   `xml:"uid"`
-			Regex   string   `xml:"regex"`
+			XMLName  xml.Name `xml:"http://api.testbed.deterlab.net/xsd viewExperiments"`
+			UID      string   `xml:"uid"`
+			Regex    string   `xml:"regex"`
+			ListOnly bool     `xml:"listOnly"`
+			Offset   int      `xml:"offset"`
+			Count    int      `xml:"count"`
 		}
 	}
 }
@@ -275,4 +278,36 @@ type ChangeResult struct {
 	Name    string `xml:"name"`
 	Reason  string `xml:"reason"`
 	Success bool   `xml:"success"`
+}
+
+// Change Experiment ACL -------------------------------------------------------
+
+type AccessMember struct {
+	XMLName     xml.Name `xml:"acl"`
+	CircleId    string   `xml:"circleId"`
+	Permissions []string `xml:"permissions"`
+}
+
+type ChangeExperimentACLEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		ChangeExperimentACL struct {
+			XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd changeExperimentACL"`
+			EID     string   `xml:"eid"`
+			ACL     []AccessMember
+		}
+	}
+}
+
+type ChangeExperimentACLResponse struct {
+	Return []ChangeResult `xml:"return"`
+}
+
+type ChangeExperimentACLResponseEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		ChangeExperimentACLResponse ChangeExperimentACLResponse
+	}
 }

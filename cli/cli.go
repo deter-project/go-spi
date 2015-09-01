@@ -6,6 +6,7 @@ import (
 	"github.com/deter-project/go-spi/spi"
 	"github.com/fatih/color"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/user"
 )
@@ -59,6 +60,7 @@ func LoadUser() {
 var debugF = flag.Bool("debug", false, "show xml messages")
 
 func PreRun() {
+	log.SetFlags(0)
 	LoadCert()
 	LoadUser()
 
