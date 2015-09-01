@@ -21,12 +21,14 @@ func CreateExperiment(expId, owner, topdl string) (
 	e := CreateExperimentEnvelope{}
 	e.Body.CreateExperiment.EID = expId
 	e.Body.CreateExperiment.Owner = owner
-	e.Body.CreateExperiment.Aspects = append(e.Body.CreateExperiment.Aspects, ExperimentAspect{
-		Data: base64.StdEncoding.EncodeToString([]byte(topdl)),
-		Type: "layout",
-	})
-	e.Body.CreateExperiment.Profile = append(e.Body.CreateExperiment.Profile, DescriptionAttr{
-		"description", "This is not an experiment"})
+	e.Body.CreateExperiment.Aspects = append(e.Body.CreateExperiment.Aspects,
+		ExperimentAspect{
+			Data: base64.StdEncoding.EncodeToString([]byte(topdl)),
+			Type: "layout",
+		})
+	e.Body.CreateExperiment.Profile = append(e.Body.CreateExperiment.Profile,
+		DescriptionAttr{
+			"description", "This is not an experiment"})
 
 	var responseEnvelope CreateExperimentResponseEnvelope
 
@@ -146,6 +148,32 @@ func RemoveExperiment(expId string) (*RemoveExperimentResponse, error) {
 	}
 
 	response := &responseEnvelope.Body.RemoveExperimentResponse
+
+	return response, nil
+}
+
+// View Experiments ------------------------------------------------------------
+
+func ViewExperiments(user, regex string) (*ViewExperimentsResponse, error) {
+
+	e := ViewExperimentsEnvelope{}
+	e.Body.ViewExperiments.UID = user
+	e.Body.ViewExperiments.Regex = regex
+
+	var responseEnvelope ViewExperimentsResponseEnvelope
+
+	rsp, _, err := spiCall(XPS_HTTPS+"/viewExperiments", e, &responseEnvelope)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	if rsp.StatusCode != 200 {
+		return nil, fmt.Errorf("Server did not accept the viewExperiments call - %d",
+			rsp.StatusCode)
+	}
+
+	response := &responseEnvelope.Body.ViewExperimentsResponse
 
 	return response, nil
 }

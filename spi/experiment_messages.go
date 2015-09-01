@@ -92,7 +92,6 @@ type RealizationMap struct {
 }
 
 type RealizationDescription struct {
-	//XMLName     xml.Name                 `xml:"http://api.testbed.deterlab.net/xsd RealizationDescription"`
 	XMLName     xml.Name                 `xml:"http://api.testbed.deterlab.net/xsd return"`
 	Circle      string                   `xml:"circle"`
 	Experiment  string                   `xml:"experiment"`
@@ -101,6 +100,14 @@ type RealizationDescription struct {
 	Containment []RealizationContainment `xml:"containment"`
 	Mapping     []RealizationMap         `xml:"mapping"`
 	Perms       []string                 `xml:"perms"`
+}
+
+type ExperimentDescription struct {
+	XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd return"`
+	Name    string   `xml:"experimentId"`
+	Owner   string   `xml:"owner"`
+	Staus   string   `xml:"status"`
+	Perms   []string `xml:"perms"`
 }
 
 // Remove Realization ---------------------------------------------------------
@@ -176,6 +183,32 @@ type ViewRealizationsResponseEnvelope struct {
 	Body struct {
 		Body
 		ViewRealizationsResponse ViewRealizationsResponse `xml:"viewRealizationsResponse"`
+	}
+}
+
+// View Experiments -----------------------------------------------------------
+
+type ViewExperimentsEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		ViewExperiments struct {
+			XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd viewExperiments"`
+			UID     string   `xml:"uid"`
+			Regex   string   `xml:"regex"`
+		}
+	}
+}
+
+type ViewExperimentsResponse struct {
+	Return []ExperimentDescription `xml:"return"`
+}
+
+type ViewExperimentsResponseEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		ViewExperimentsResponse ViewExperimentsResponse `xml:"viewExperimentsResponse"`
 	}
 }
 
