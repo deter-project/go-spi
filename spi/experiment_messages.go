@@ -2,13 +2,77 @@ package spi
 
 import (
 	"encoding/xml"
+	"fmt"
 )
+
+type ExperimentFaultEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		Fault struct {
+			Code struct {
+				Value string
+			}
+			Reason struct {
+				Text string
+			}
+			Detail struct {
+				ExperimentsDeterFault struct {
+					//XMLName    xml.Name `xml:"http://api.testbed.deterlab.net/xsd ExperimentsDeterFault"`
+					DeterFault struct {
+						//XMLName       xml.Name `xml:"http://api.testbed.deterlab.net/xsd DeterFault"`
+						DetailMessage string `xml:"detailMessage"`
+						ErrorCode     int    `xml:"errorCode"`
+						ErrorMessage  string `xml:"errorMessage"`
+					}
+				}
+			}
+		}
+	}
+}
+
+func (f ExperimentFaultEnvelope) String() string {
+	df := &f.Body.Fault.Detail.ExperimentsDeterFault.DeterFault
+	return fmt.Sprintf("%s (%d): %s", df.ErrorMessage, df.ErrorCode, df.DetailMessage)
+}
+
+type RealizationsFaultEnvelope struct {
+	Envelope
+	Body struct {
+		Body
+		Fault struct {
+			Code struct {
+				Value string
+			}
+			Reason struct {
+				Text string
+			}
+			Detail struct {
+				RealizationsDeterFault struct {
+					//XMLName    xml.Name `xml:"http://api.testbed.deterlab.net/xsd ExperimentsDeterFault"`
+					DeterFault struct {
+						//XMLName       xml.Name `xml:"http://api.testbed.deterlab.net/xsd DeterFault"`
+						DetailMessage string `xml:"detailMessage"`
+						ErrorCode     int    `xml:"errorCode"`
+						ErrorMessage  string `xml:"errorMessage"`
+					}
+				}
+			}
+		}
+	}
+}
+
+func (f RealizationsFaultEnvelope) String() string {
+	df := &f.Body.Fault.Detail.RealizationsDeterFault.DeterFault
+	return fmt.Sprintf("%s (%d): %s", df.ErrorMessage, df.ErrorCode, df.DetailMessage)
+}
 
 // Attributes & Aspects --------------------------------------------------------
 
 type ExperimentAspect struct {
-	Data string `xml:"data"`
-	Type string `xml:"type"`
+	XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd aspects"`
+	Data    string   `xml:"data"`
+	Type    string   `xml:"type"`
 }
 
 type Attribute interface {
@@ -16,8 +80,9 @@ type Attribute interface {
 }
 
 type DescriptionAttr struct {
-	Name  string `xml:"name"`
-	Value string `xml:"value"`
+	XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd profile"`
+	Name    string   `xml:"name"`
+	Value   string   `xml:"value"`
 }
 
 func (d DescriptionAttr) GetName() string {
@@ -31,11 +96,11 @@ type CreateExperimentEnvelope struct {
 	Body struct {
 		Body
 		CreateExperiment struct {
-			XMLName xml.Name           `xml:"http://api.testbed.deterlab.net/xsd createExperiment"`
-			EID     string             `xml:"eid"`
-			Owner   string             `xml:"owner"`
-			Aspects []ExperimentAspect `xml:"aspects"`
-			Profile []Attribute        `xml:"profile"`
+			XMLName xml.Name `xml:"http://api.testbed.deterlab.net/xsd createExperiment"`
+			EID     string   `xml:"eid"`
+			Owner   string   `xml:"owner"`
+			Aspects []ExperimentAspect
+			Profile []Attribute
 		}
 	}
 }
@@ -96,7 +161,7 @@ type RealizationDescription struct {
 	Circle      string                   `xml:"circle"`
 	Experiment  string                   `xml:"experiment"`
 	Name        string                   `xml:"name"`
-	Staus       string                   `xml:"status"`
+	Status      string                   `xml:"status"`
 	Containment []RealizationContainment `xml:"containment"`
 	Mapping     []RealizationMap         `xml:"mapping"`
 	Perms       []string                 `xml:"perms"`

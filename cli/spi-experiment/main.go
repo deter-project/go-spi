@@ -5,16 +5,19 @@ import (
 	"fmt"
 	"github.com/deter-project/go-spi/cli"
 	"github.com/deter-project/go-spi/spi"
+	"io/ioutil"
 )
 
 //flags
-var opF = flag.String("op", "", "[remove | view | change-profile | change-acl]")
+var opF = flag.String("op", "", "[create | remove | view | change-profile | change-acl]")
 var xpF = flag.String("xp", "", "SPI Experiment Name")
 var nameF = flag.String("name", "", "Argument Name")
 var valueF = flag.String("value", "", "Argument Value")
 var deleteF = flag.Bool("delete", false, "Delete Flag")
-var circF = flag.String("circle", "", "Circle Flag")
-var permF = flag.String("perm", "", "Permission Flag")
+var circF = flag.String("circle", "", "Circle")
+var permF = flag.String("perm", "", "Permission")
+var srcF = flag.String("src", "", "TopDL Source")
+var verboseF = flag.Bool("verbose", false, "Verbose Response")
 
 func remove() {
 
@@ -41,7 +44,7 @@ func view() {
 
 	cli.PreRun()
 
-	rsp, err := spi.ViewExperiments(cli.User, ".*")
+	rsp, err := spi.ViewExperiments(cli.User, ".*", !*verboseF)
 	if err != nil {
 		cli.Fatal(fmt.Sprintf("view experiments failed: %v", err))
 	}
@@ -126,10 +129,44 @@ func changeACL() {
 
 }
 
+func create() {
+
+	if *xpF == "" {
+		cli.Fatal(
+			"you must specify an experiment name with the -xp flag, " +
+				"use the -help flag for details")
+	}
+
+	if *srcF == "" {
+		cli.Fatal(
+			"you must specify a TopDL source file with the -src flag, " +
+				"use the -help flag for details")
+	}
+
+	cli.PreRun()
+
+	src, err := ioutil.ReadFile(*srcF)
+	if err != nil {
+		cli.Fatal(fmt.Sprintf("Failed to read source file '%s'", *srcF))
+	}
+
+	rsp, err := spi.CreateExperiment(*xpF, cli.User, string(src))
+	if err != nil {
+		cli.Fatal("create experiment failed")
+	}
+
+	if rsp.Return != true {
+		cli.Fatal("create experiment returned false")
+	}
+
+}
+
 func main() {
 	flag.Parse()
 
 	switch *opF {
+	case "create":
+		create()
 	case "remove":
 		remove()
 	case "view":

@@ -2,6 +2,7 @@ package spi
 
 import (
 	"encoding/base64"
+	"encoding/xml"
 	"fmt"
 	"log"
 )
@@ -28,17 +29,27 @@ func CreateExperiment(expId, owner, topdl string) (
 		})
 	e.Body.CreateExperiment.Profile = append(e.Body.CreateExperiment.Profile,
 		DescriptionAttr{
-			"description", "This is not an experiment"})
+			Name:  "description",
+			Value: "This is not an experiment",
+		})
 
 	var responseEnvelope CreateExperimentResponseEnvelope
 
-	rsp, _, err := spiCall(XPS_HTTPS+"/createExperiment", e, &responseEnvelope)
+	rsp, bs, err := spiCall(XPS_HTTPS+"/createExperiment", e, &responseEnvelope)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
 	if rsp.StatusCode != 200 {
+		fe := ExperimentFaultEnvelope{}
+		err = xml.Unmarshal([]byte(bs), &fe)
+		if err != nil {
+			log.Println("unmarshal experiment soap fault failed")
+			log.Println(err)
+		} else {
+			log.Println(fe.String())
+		}
 		return nil, fmt.Errorf("Server did not accept the createExperiment call - %d",
 			rsp.StatusCode)
 	}
@@ -60,13 +71,21 @@ func RealizeExperiment(expId, circle, owner string) (
 
 	var responseEnvelope RealizeExperimentResponseEnvelope
 
-	rsp, _, err := spiCall(XPS_HTTPS+"/realizeExperiment", e, &responseEnvelope)
+	rsp, bs, err := spiCall(XPS_HTTPS+"/realizeExperiment", e, &responseEnvelope)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
 	if rsp.StatusCode != 200 {
+		fe := RealizationsFaultEnvelope{}
+		err = xml.Unmarshal([]byte(bs), &fe)
+		if err != nil {
+			log.Println("unmarshal realizations soap fault failed")
+			log.Println(err)
+		} else {
+			log.Println(fe.String())
+		}
 		return nil, fmt.Errorf("Server did not accept the realizeExperiment call - %d",
 			rsp.StatusCode)
 	}
@@ -86,13 +105,22 @@ func RemoveRealization(expId string) (*RemoveRealizationResponse, error) {
 
 	var responseEnvelope RemoveRealizationResponseEnvelope
 
-	rsp, _, err := spiCall(REX_HTTPS+"/removeRealization", e, &responseEnvelope)
+	rsp, bs, err := spiCall(REX_HTTPS+"/removeRealization", e, &responseEnvelope)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
 	if rsp.StatusCode != 200 {
+		fe := RealizationsFaultEnvelope{}
+		err = xml.Unmarshal([]byte(bs), &fe)
+		if err != nil {
+			log.Println("unmarshal soap fault failed")
+			log.Println(err)
+		} else {
+			log.Println(fe.String())
+		}
+
 		return nil, fmt.Errorf("Server did not accept the removeRealization call - %d",
 			rsp.StatusCode)
 	}
@@ -154,12 +182,12 @@ func RemoveExperiment(expId string) (*RemoveExperimentResponse, error) {
 
 // View Experiments ------------------------------------------------------------
 
-func ViewExperiments(user, regex string) (*ViewExperimentsResponse, error) {
+func ViewExperiments(user, regex string, listOnly bool) (*ViewExperimentsResponse, error) {
 
 	e := ViewExperimentsEnvelope{}
 	e.Body.ViewExperiments.UID = user
 	e.Body.ViewExperiments.Regex = regex
-	e.Body.ViewExperiments.ListOnly = true
+	e.Body.ViewExperiments.ListOnly = listOnly
 	e.Body.ViewExperiments.Offset = 0
 	e.Body.ViewExperiments.Count = 47
 

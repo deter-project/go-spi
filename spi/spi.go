@@ -98,15 +98,16 @@ func spiCall(addr string, message interface{}, result interface{}) (
 			log.Println("unmarshall fail")
 			log.Println(err)
 		}
-	} else {
-		fe := FaultEnvelope{}
-		err = xml.Unmarshal([]byte(bs), &fe)
-		if err != nil {
-			log.Println("unmarshal soap fault failed")
-			log.Println(err)
-		} else {
-			log.Println(fe.String())
-		}
+	} else { /*
+			fe := FaultEnvelope{}
+			err = xml.Unmarshal([]byte(bs), &fe)
+			if err != nil {
+				log.Println("unmarshal soap fault failed")
+				log.Println(err)
+			} else {
+				log.Println(fe.String())
+			}
+		*/
 	}
 
 	return resp, bs, nil

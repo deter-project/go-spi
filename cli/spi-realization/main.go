@@ -8,13 +8,16 @@ import (
 )
 
 //flags
-var opF = flag.String("op", "", "[remove | view]")
+var opF = flag.String("op", "", "[create | remove | view]")
 var rzF = flag.String("rz", "", "SPI Realization Name")
+var circF = flag.String("circle", "", "SPI Circle")
 
 func main() {
 	flag.Parse()
 
 	switch *opF {
+	case "create":
+		create()
 	case "remove":
 		remove()
 	case "view":
@@ -32,14 +35,40 @@ func main() {
 
 }
 
-func remove() {
+func create() {
 
-	cli.PreRun()
 	if *rzF == "" {
 		cli.Fatal(
 			"you must specify a realization name with the -rz flag, " +
 				"use the -help flag for details")
 	}
+
+	if *circF == "" {
+		cli.Fatal(
+			"you must specify a circle name with the -circle flag, " +
+				"use the -help flag for details")
+	}
+
+	cli.PreRun()
+
+	rsp, err := spi.RealizeExperiment(*rzF, *circF, cli.User)
+	if err != nil {
+		cli.Fatal("create realization failed")
+	}
+
+	fmt.Println(rsp)
+
+}
+
+func remove() {
+
+	if *rzF == "" {
+		cli.Fatal(
+			"you must specify a realization name with the -rz flag, " +
+				"use the -help flag for details")
+	}
+
+	cli.PreRun()
 
 	rsp, err := spi.RemoveRealization(*rzF)
 	if err != nil {
@@ -61,7 +90,7 @@ func view() {
 		cli.Fatal(fmt.Sprintf("view realizations failed: %v", err))
 	}
 	for _, x := range rsp.Return {
-		fmt.Println(x.Name)
+		fmt.Printf("%s : %s\n", x.Name, x.Status)
 	}
 
 }
