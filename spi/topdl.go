@@ -27,7 +27,8 @@ type Computer struct {
 	XMLName    xml.Name    `xml:"computer"`
 	Name       string      `xml:"name"`
 	Interfaces []Interface //`xml:"interfaces"`
-	OSs        []OS        `xml:"os"`
+	OSs        []OS        //`xml:"os"`
+	Attributes []TopDLAttribute
 }
 
 type Interface struct {
@@ -39,8 +40,9 @@ type Interface struct {
 }
 
 type OS struct {
-	Name    string `xml:"name"`
-	Version string `xml:"version"`
+	XMLName xml.Name `xml:"os"`
+	Name    string   `xml:"name"`
+	Version string   `xml:"version"`
 }
 
 type Capacity struct {
@@ -56,4 +58,10 @@ type Latency struct {
 type Kind struct {
 	//should be either "max" or "average"
 	Value string `xml:"value"`
+}
+
+type TopDLAttribute struct {
+	XMLName   xml.Name `xml:"attribute"`
+	Attribute string   `xml:"attribute"`
+	Value     string   `xml:"value"`
 }
