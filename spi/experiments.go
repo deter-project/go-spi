@@ -30,11 +30,12 @@ func CreateExperiment(expId, owner, topdl string, virtualized bool) (
 	if !virtualized {
 		e.Body.CreateExperiment.Aspects = append(e.Body.CreateExperiment.Aspects,
 			ExperimentAspect{
-				Data: "<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">" +
-					"<properties version=\"1.0\">" +
-					"<entry key=\"virtualMachines\">false</entry>" +
-					"<!-- <entry key=\"allocateResources\">false</entry> -->" +
-					"</properties>",
+				Data: base64.StdEncoding.EncodeToString([]byte(
+					"<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">" +
+						"<properties version=\"1.0\">" +
+						"<entry key=\"virtualMachines\">false</entry>" +
+						"<!-- <entry key=\"allocateResources\">false</entry> -->" +
+						"</properties>")),
 				Type: "embedder",
 			})
 	}
