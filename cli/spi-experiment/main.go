@@ -150,7 +150,7 @@ func create() {
 		cli.Fatal(fmt.Sprintf("Failed to read source file '%s'", *srcF))
 	}
 
-	rsp, err := spi.CreateExperiment(*xpF, cli.User, string(src))
+	rsp, err := spi.CreateExperiment(*xpF, cli.User, string(src), false)
 	if err != nil {
 		cli.Fatal("create experiment failed")
 	}

@@ -16,7 +16,7 @@ const REX_HTTPS = API_HTTPS + "/Realizations"
 
 // Create Experiment -----------------------------------------------------------
 
-func CreateExperiment(expId, owner, topdl string) (
+func CreateExperiment(expId, owner, topdl string, virtualized bool) (
 	*CreateExperimentResponse, error) {
 
 	e := CreateExperimentEnvelope{}
@@ -27,6 +27,17 @@ func CreateExperiment(expId, owner, topdl string) (
 			Data: base64.StdEncoding.EncodeToString([]byte(topdl)),
 			Type: "layout",
 		})
+	if !virtualized {
+		e.Body.CreateExperiment.Aspects = append(e.Body.CreateExperiment.Aspects,
+			ExperimentAspect{
+				Data: "<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">" +
+					"<properties version=\"1.0\">" +
+					"<entry key=\"virtualMachines\">false</entry>" +
+					"<!-- <entry key=\"allocateResources\">false</entry> -->" +
+					"</properties>",
+				Type: "embedder",
+			})
+	}
 	e.Body.CreateExperiment.Profile = append(e.Body.CreateExperiment.Profile,
 		DescriptionAttr{
 			Name:  "description",
